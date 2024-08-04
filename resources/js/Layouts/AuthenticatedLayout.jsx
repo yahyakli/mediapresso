@@ -129,7 +129,18 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                         </div>
                         :
-                        <div></div>
+                        <>
+                            <ResponsiveNavLink
+                                href={route('login')}
+                            >
+                                Log in
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href={route('register')}
+                            >
+                                Register
+                            </ResponsiveNavLink>
+                        </>
                     }
                 </div>
             </nav>

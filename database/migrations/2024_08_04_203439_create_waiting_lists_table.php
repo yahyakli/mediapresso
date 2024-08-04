@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('waiting_lists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('title');
-            $table->text('description');
-            $table->json('attachments');
-            $table->string('category');
+            $table->integer("telephone");
+            $table->foreignId("user_request_id")->constrained("users")->onDelete("cascade");
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('waiting_lists');
     }
 };

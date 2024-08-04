@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\WaitingList;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        
+
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -45,6 +48,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // dd($request->is_journalist);
+
+        if($request->is_journalist){
+            $waitinguser = WaitingList::create([
+                'telephone' => $request->telephone,
+                'user_request_id' => $user->id,
+            ]);
+        }
 
         event(new Registered($user));
 

@@ -37,6 +37,8 @@ class RegisteredUserController extends Controller
             'username' => 'required|string|max:255|unique:'.User::class,
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'is_journalist' => 'nullable|boolean', 
+            'telephone' => 'nullable|string|max:20',
         ]);
 
         
@@ -49,7 +51,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // dd($request->is_journalist);
+        // dd($user->id);
 
         if($request->is_journalist){
             $waitinguser = WaitingList::create([

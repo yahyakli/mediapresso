@@ -52,7 +52,7 @@ export default function Authenticated({ user, header, children }) {
                                             type="button"
                                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                         >
-                                            {user.username}
+                                            @{user.username}
 
                                             <svg
                                                 className="ms-2 -me-0.5 h-4 w-4"
@@ -71,6 +71,11 @@ export default function Authenticated({ user, header, children }) {
                                 </Dropdown.Trigger>
 
                                 <Dropdown.Content>
+                                    {user.is_admin === true && (
+                                        <Dropdown.Link href={route('dashboard')}>
+                                            Dashboard
+                                        </Dropdown.Link>
+                                    )}
                                     <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
                                     <Dropdown.Link href={route('logout')} method="post" as="button">
                                         Log Out
@@ -122,6 +127,11 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="mt-3 space-y-1">
+                                {user.is_admin === false && (
+                                    <Dropdown.Link href={route('dashboard')}>
+                                        Dashboard
+                                    </Dropdown.Link>
+                                )}
                                 <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
                                 <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                     Log Out

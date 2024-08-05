@@ -9,5 +9,6 @@ class WaitingList extends Model
 {
     protected $fillable = [
         "telephone",
+        "user_request_id",
     ];
 }

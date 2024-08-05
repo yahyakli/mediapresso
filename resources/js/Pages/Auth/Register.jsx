@@ -9,7 +9,6 @@ import { useState } from 'react';
 
 export default function Register() {
     const [isJournlist, setIsJournlist] = useState(false);
-    console.log(isJournlist)
     const { data, setData, post, processing, errors, reset } = useForm({
         first_name: '',
         last_name: '',
@@ -27,6 +26,12 @@ export default function Register() {
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
+    };
+
+    const handleCheckboxChange = () => {
+        const newValue = !isJournlist;
+        setIsJournlist(newValue);
+        setData('is_journalist', newValue); // Update data.is_journalist here
     };
 
     return (
@@ -144,7 +149,7 @@ export default function Register() {
                 <div className='my-10'>
                     <div className='flex items-center justify-between'>
                         <InputLabel htmlFor="is_journalist" value="Select this option if you want a press account"/>
-                        <Checkbox onChange={()=> setIsJournlist(!isJournlist)}/>
+                        <Checkbox onChange={handleCheckboxChange}/>
                     </div>
                     
                     {isJournlist && (

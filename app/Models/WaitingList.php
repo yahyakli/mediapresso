@@ -11,4 +11,8 @@ class WaitingList extends Model
         "telephone",
         "user_request_id",
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

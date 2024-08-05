@@ -47,6 +47,7 @@ class RegisteredUserController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'username' => $request->username,
+            'telephone' => $request->telephone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -54,7 +55,7 @@ class RegisteredUserController extends Controller
         // dd($user->id);
 
         if($request->is_journalist){
-            $waitinguser = WaitingList::create([
+            WaitingList::create([
                 'telephone' => $request->telephone,
                 'user_request_id' => $user->id,
             ]);

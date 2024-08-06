@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\WaitingList;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class WaitingListController extends Controller
@@ -13,10 +14,28 @@ class WaitingListController extends Controller
             $query->select('user_request_id')
             ->from('waiting_lists');
         })->get();
-        return inertia("Dashboard", ["users" => $listItems]);
+        $users = User::all();
+        return inertia("Dashboard", ["waitingUsers" => $listItems, "Users" => $users]);
     } 
 
-    public function accept(User $userid){
-        
+    public function accept(Request $request){
+        $user = User::find($request->userId);
+
+        if ($user) {
+            $user->is_journalist = "1";
+            $user->save();
+
+            WaitingList::where('user_request_id', $user->id)->delete();
+
+            return response()->json(['message' => 'User accepted successfully']);
+        } else {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+    }
+
+
+    public function reject(User $user){
+
     }
 }

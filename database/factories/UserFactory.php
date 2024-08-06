@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'first_name' => $this->faker->name,
             'last_name' => $this->faker->name,
             'username' => $this->faker->unique()->name,
+            'telephone' => $this->faker->unique()->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail,
             'avatar' => $this->faker->imageUrl(),
             'is_admin' => $this->faker->boolean,

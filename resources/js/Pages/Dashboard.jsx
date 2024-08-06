@@ -1,16 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head } from '@inertiajs/react'
-import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import axios from 'axios';
 
-export default function Dashboard({ auth, users }) {
+export default function Dashboard({ auth, waitingUsers: initialUsers, Users }) {
 
-    const acceptSubmit = (userId) => {
-        axios.post('');
-    }
+    const [users, setUsers] = useState(initialUsers);
+
+    const handleSubmit = (action, userId) => (e) => {
+        e.preventDefault();
+        const confirmationMessage = action === 'accept' ? 'Are you sure you want to accept this user?' : 'Are you sure you want to reject this user?';
+        
+        if (window.confirm(confirmationMessage)) {
+            const endpoint = action === 'accept' ? '/dashboard/accept' : '/dashboard/reject';
+            
+            axios.post(endpoint, { userId })
+                .then(response => {
+                    console.log(response.data);
+                    // Handle success (e.g., update the UI or show a success message)
+                    setUsers(users.filter(user => user.id !== userId));
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Handle error (e.g., show an error message)
+                });
+        }
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -28,8 +46,8 @@ export default function Dashboard({ auth, users }) {
 
 
         <div className="py-12">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-4/6 max-h-[500px]">
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-between gap-3">
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-3/6 max-h-[500px]">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                             <caption className='py-4 text-xl font-bold'>Waiting List</caption>
@@ -44,23 +62,52 @@ export default function Dashboard({ auth, users }) {
                             </thead>
 
                             <tbody className="divide-y divide-gray-200">
-                            {users.map((user) => {
+                            {initialUsers.map((user) => {
                                 return (
                                     <tr className="odd:bg-gray-50 text-center" key={user.id}>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">{user.id}</td>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.username}</td>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.telephone}</td>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.email}</td>
-                                        <td className="whitespace-nowrap px-4 gap-3 flex items-center justify-center py-2 text-gray-700">
-                                            <SecondaryButton>
-                                                <form onSubmit={acceptSubmit}>
-                                                    Accept
-                                                </form>
+                                        <td className="whitespace-nowrap px-4 gap-3 flex items-center justify-around py-2 text-gray-700">
+                                            <SecondaryButton onClick={handleSubmit('accept', user.id)}>
+                                                Accept
                                             </SecondaryButton>
-                                            <DangerButton>
-                                                <form onSubmit={rejectSubmit}>
-                                                    Reject
-                                                </form>
+                                            <DangerButton onClick={handleSubmit('reject', user.id)}>
+                                                Reject
+                                            </DangerButton>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className="bg-white overflow-y-scroll shadow-sm sm:rounded-lg w-3/6 max-h-[500px]">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                            <caption className='py-4 text-xl font-bold'>All Users</caption>
+                            <thead className="ltr:text-left rtl:text-right">
+                            <tr>
+                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Username</th>
+                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Email</th>
+                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Action</th>
+                            </tr>
+                            </thead>
+
+                            <tbody className="divide-y divide-gray-200">
+                            {Users.map((user) => {
+                                return (
+                                    <tr className="odd:bg-gray-50 text-center" key={user.id}>
+                                        <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.username}</td>
+                                        <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.email}</td>
+                                        <td className="whitespace-nowrap px-4 gap-3 flex items-center justify-around py-2 text-gray-700">
+                                            <SecondaryButton onClick={handleSubmit('accept', user.id)}>
+                                                Accept
+                                            </SecondaryButton>
+                                            <DangerButton onClick={handleSubmit('reject', user.id)}>
+                                                Reject
                                             </DangerButton>
                                         </td>
                                     </tr>

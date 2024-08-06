@@ -16,8 +16,8 @@ Route::get('/home', function () {
 
 Route::middleware('auth', 'admin')->group(function(){
     Route::get('/dashboard', [WaitingListController::class, 'index'])->name('dashboard');
-    Route::post('/dashboard/accept/{userid}', [WaitingListController::class, 'accept'])->name('accept-user');
-    Route::post('/dashboard/reject/{userid}', [WaitingListController::class, 'reject'])->name('reject-user');
+    Route::post('/dashboard/accept', [WaitingListController::class, 'accept'])->name('accept-user');
+    Route::post('/dashboard/reject', [WaitingListController::class, 'reject'])->name('reject-user');
 });
 
 Route::middleware('auth')->group(function () {

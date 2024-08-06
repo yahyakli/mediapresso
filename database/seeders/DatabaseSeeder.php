@@ -24,5 +24,7 @@ class DatabaseSeeder extends Seeder
             'is_admin' => '1',
             'password' => 'akliakli',
         ]);
+
+        User::factory(10)->create();
     }
 }

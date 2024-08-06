@@ -1,12 +1,11 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaitingListController;
-use App\Models\WaitingList;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     return  redirect(route('home', absolute: false));
@@ -20,6 +19,11 @@ Route::middleware('auth', 'admin', 'active')->group(function(){
     Route::post('/dashboard/reject', [WaitingListController::class, 'reject'])->name('reject-user');
     Route::post('/dashboard/deblock', [UserController::class, 'unblockUser'])->name('deblock-user');
     Route::post('/dashboard/block', [UserController::class, 'blockUser'])->name('block-user');
+});
+
+Route::middleware('auth', 'active', 'journalist')->group(function(){
+    Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
+    Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
 });
 
 Route::middleware('auth', 'active')->group(function () {

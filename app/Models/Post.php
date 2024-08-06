@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'journalist_id',
+        'user_id',
         'title',
         'description',
         'attachments',
-        'category'
+        'category',
     ];
 
     public function attachments()

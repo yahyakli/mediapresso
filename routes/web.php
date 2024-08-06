@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaitingListController;
@@ -11,9 +12,7 @@ Route::get('/', function () {
     return  redirect(route('home', absolute: false));
 });
 
-Route::get('/home', function () {
-    return Inertia::render('Home');
-})->middleware('active')->name('home');
+Route::get('/home', [HomeController::class, 'index'])->middleware('active')->name('home');
 
 Route::middleware('auth', 'admin', 'active')->group(function(){
     Route::get('/dashboard', [WaitingListController::class, 'index'])->name('dashboard');

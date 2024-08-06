@@ -12,9 +12,10 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         first_name: user.first_name,
         last_name: user.last_name,
         username: user.username,
+        telephone: user.telephone,
         email: user.email,
     });
-
+    
     const submit = (e) => {
         e.preventDefault();
 
@@ -58,7 +59,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         value={data.last_name}
                         onChange={(e) => setData('last_name', e.target.value)}
                         required
-                        isFocused
                         autoComplete="last_name"
                     />
 
@@ -75,7 +75,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         value={data.username}
                         onChange={(e) => setData('username', e.target.value)}
                         required
-                        isFocused
                         autoComplete="username"
                     />
 
@@ -96,6 +95,23 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+
+                <div>
+                    <InputLabel htmlFor="telephone" value="Phone Number" />
+
+                    <TextInput
+                        id="telephone"
+                        type="text"
+                        className="mt-1 block w-full"
+                        value={data.telephone}
+                        onChange={(e) => setData('telephone', e.target.value)}
+                        required
+                        autoComplete="telephone"
+                    />
+
+                    <InputError className="mt-2" message={errors.telephone} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (

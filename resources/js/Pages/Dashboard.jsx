@@ -19,12 +19,10 @@ export default function Dashboard({ auth, waitingUsers: initialUsers, Users }) {
             axios.post(endpoint, { userId })
                 .then(response => {
                     console.log(response.data);
-                    // Handle success (e.g., update the UI or show a success message)
                     setUsers(users.filter(user => user.id !== userId));
                 })
                 .catch(error => {
                     console.error(error);
-                    // Handle error (e.g., show an error message)
                 });
         }
     };
@@ -47,17 +45,17 @@ export default function Dashboard({ auth, waitingUsers: initialUsers, Users }) {
 
         <div className="py-12">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-between gap-3">
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-3/6 max-h-[500px]">
-                    <div className="overflow-x-auto">
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-3/6">
+                    <div className="overflow-auto max-h-[500px]">
                         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                             <caption className='py-4 text-xl font-bold'>Waiting List</caption>
                             <thead className="ltr:text-left rtl:text-right">
                             <tr>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">ID</th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Username</th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Phone Number</th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Email</th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Action</th>
+                                <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">ID</th>
+                                <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Username</th>
+                                <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Phone Number</th>
+                                <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Email</th>
+                                <th className="whitespace-nowrap px-4 border py-2 font-medium text-gray-900">Action</th>
                             </tr>
                             </thead>
 
@@ -84,14 +82,14 @@ export default function Dashboard({ auth, waitingUsers: initialUsers, Users }) {
                         </table>
                     </div>
                 </div>
-                <div className="bg-white overflow-y-scroll shadow-sm sm:rounded-lg w-3/6 max-h-[500px]">
-                    <div className="overflow-x-auto">
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-3/6">
+                    <div className="overflow-auto max-h-[500px]">
                         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                             <caption className='py-4 text-xl font-bold'>All Users</caption>
                             <thead className="ltr:text-left rtl:text-right">
                             <tr>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Username</th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Email</th>
+                                <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Username</th>
+                                <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Email</th>
                                 <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Action</th>
                             </tr>
                             </thead>
@@ -103,12 +101,16 @@ export default function Dashboard({ auth, waitingUsers: initialUsers, Users }) {
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.username}</td>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.email}</td>
                                         <td className="whitespace-nowrap px-4 gap-3 flex items-center justify-around py-2 text-gray-700">
+                                            {user.is_blocked
+                                            ?
                                             <SecondaryButton onClick={handleSubmit('accept', user.id)}>
-                                                Accept
+                                                Deblock
                                             </SecondaryButton>
+                                            :
                                             <DangerButton onClick={handleSubmit('reject', user.id)}>
-                                                Reject
+                                                Block
                                             </DangerButton>
+                                            }
                                         </td>
                                     </tr>
                                 );

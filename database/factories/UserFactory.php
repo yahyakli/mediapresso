@@ -33,7 +33,8 @@ class UserFactory extends Factory
             'telephone' => $this->faker->unique()->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail,
             'avatar' => $this->faker->imageUrl(),
-            'is_admin' => $this->faker->boolean,
+            'is_journalist' => $this->faker->boolean,
+            'is_blocked' => $this->faker->boolean,
             'password' => bcrypt('password'), // Default password
             'remember_token' => Str::random(10),
         ];

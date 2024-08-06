@@ -21,10 +21,11 @@ class DatabaseSeeder extends Seeder
             'username' => 'akliyahya',
             'telephone' => '0657838772',
             'email' => 'akli.yahya05@gmail.com',
-            'is_admin' => '1',
+            'is_admin' => true,
+            'is_blocked' => false,
             'password' => 'akliakli',
         ]);
 
-        User::factory(10)->create();
+        User::factory(150)->create();
     }
 }

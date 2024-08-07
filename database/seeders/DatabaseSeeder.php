@@ -26,6 +26,6 @@ class DatabaseSeeder extends Seeder
             'password' => 'akliakli',
         ]);
 
-        User::factory(150)->create();
+        User::factory(10)->create();
     }
 }

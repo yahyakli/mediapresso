@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 
 const FileList = ({ files, onRemove }) => {
     return (
@@ -35,11 +36,19 @@ export default function create({ auth }) {
         category: 'sports',
     });
 
-
     const submit = (e) => {
         e.preventDefault();
-
-        post(route('post.store'));
+    
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('description', data.description);
+        formData.append('category', data.category);
+    
+        data.attachments.forEach((file, index) => {
+            formData.append(`attachments[${index}]`, file);
+        });
+    
+        post(route('post.store'), formData);
     };
 
     const handleFileChange = (e) => {
@@ -91,11 +100,11 @@ export default function create({ auth }) {
                             <div className="mt-4">
                                 <InputLabel htmlFor="description" value="Description" />
 
-                                <TextInput
+                                <textarea
                                     id="description"
                                     name="description"
                                     value={data.description}
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                     autoComplete="description"
                                     placeholder="Description"
                                     onChange={(e) => setData('description', e.target.value)}
@@ -105,18 +114,18 @@ export default function create({ auth }) {
                                 <InputError message={errors.description} className="mt-2" />
                             </div>
                             <div className="mt-4">
-                                <InputLabel htmlFor="attachments" value="Images" />
+                                <InputLabel htmlFor="attachments" value="Images or Videos" />
 
                                 <input
                                     id="attachments"
                                     name="attachments"
                                     type='file'
-                                    accept='image/*'
+                                    accept='image/*,video/*'
                                     multiple
-                                    className="mt-1 block w-full"
+                                    className="mt-1 w-full hidden"
                                     onChange={(e) => handleFileChange(e)}
                                 />
-                                <InputError message={errors.title} className="mt-2" />
+                                <InputError message={errors.attachments} className="mt-2" />
                                 <FileList files={data.attachments} onRemove={handleRemoveFile}/>
                             </div>
                             <div className="mt-4">
@@ -138,9 +147,9 @@ export default function create({ auth }) {
                                 <InputError message={errors.category} className="mt-2" />
 
                                 <div className="flex items-center justify-start mt-4">
-                                    <PrimaryButton disabled={processing}>
+                                    <SecondaryButton type='submit' disabled={processing}>
                                         Submit
-                                    </PrimaryButton>
+                                    </SecondaryButton>
                                 </div>
                             </div>
                         </form>

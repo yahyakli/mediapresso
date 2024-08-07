@@ -19,6 +19,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'attachments' => 'nullable|array|max:10',
+            'attachments.*' => 'file|max:1024000',
             'category' => 'required|string|max:255',
         ]);
 
@@ -39,14 +40,13 @@ class PostController extends Controller
                 Storage::makeDirectory($directory);
                 $model = [
                     'post_id' => $post->id,
+                    'file_mime' => $file->getClientMimeType(),
                     'file_path' => $file->store($directory, "public"),
                 ];
                 Attachment::create($model);
                 $attachments[] = $directory;
             }
         }
-        $post->attachments = $attachments;
-        $post->save();
         return redirect(route('home'));
     }
 }

@@ -10,7 +10,7 @@ class Attachment extends Model
     protected $fillable = [
         'post_id',
         'file_path',
-        'file_type'
+        'file_mime'
     ];
 
     public function post()

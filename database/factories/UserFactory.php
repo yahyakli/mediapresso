@@ -34,7 +34,6 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'avatar' => $this->faker->imageUrl(),
             'is_journalist' => $this->faker->boolean,
-            'is_blocked' => $this->faker->boolean,
             'password' => bcrypt('password'), // Default password
             'remember_token' => Str::random(10),
         ];

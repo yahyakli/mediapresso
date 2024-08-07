@@ -171,13 +171,13 @@ export default function Dashboard({ auth, waitingUsers, Users, Journalists, Bloc
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.username}</td>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.email}</td>
                                         <td className="whitespace-nowrap px-4 gap-3 flex items-center justify-around py-2 text-gray-700">
-                                            {user.is_blocked
+                                            {user.blocked_at
                                             ?
-                                            <SecondaryButton disabled={buttonsdisable} onClick={blockDeblock(user.is_blocked, user.id)}>
+                                            <SecondaryButton disabled={buttonsdisable} onClick={blockDeblock(user.blocked_at, user.id)}>
                                                 Unblock
                                             </SecondaryButton>
                                             :
-                                            <DangerButton disabled={buttonsdisable} onClick={blockDeblock(user.is_blocked, user.id)}>
+                                            <DangerButton disabled={buttonsdisable} onClick={blockDeblock(user.blocked_at, user.id)}>
                                                 Block
                                             </DangerButton>
                                             }
@@ -193,9 +193,9 @@ export default function Dashboard({ auth, waitingUsers, Users, Journalists, Bloc
         </div>
 
 
-        <div className="py-12">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-between gap-3">
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div className="py-12 w-full">
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-between gap-3 w-full">
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg min-w-3/6">
                     <div className="overflow-auto h-[500px]">
                         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                             <caption className='py-4 text-xl font-bold'>The Journalists ({Journalists.length})</caption>
@@ -223,7 +223,7 @@ export default function Dashboard({ auth, waitingUsers, Users, Journalists, Bloc
                         </table>
                     </div>
                 </div>
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg w-2/6">
                     <div className="overflow-auto h-[500px]">
                         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                             <caption className='py-4 text-xl font-bold'>Blocked Users ({BlockedUsers.length})</caption>
@@ -231,6 +231,7 @@ export default function Dashboard({ auth, waitingUsers, Users, Journalists, Bloc
                             <tr>
                                 <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Username</th>
                                 <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Email</th>
+                                <th className="whitespace-nowrap px-4 border-r-gray-300 border py-2 font-medium text-gray-900">Blocked At</th>
                             </tr>
                             </thead>
 
@@ -240,6 +241,7 @@ export default function Dashboard({ auth, waitingUsers, Users, Journalists, Bloc
                                     <tr className="odd:bg-gray-50 text-center" key={user.id}>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.username}</td>
                                         <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.email}</td>
+                                        <td className="whitespace-nowrap px-4 border-r-gray-300 border py-2 text-gray-700">{user.blocked_at}</td>
                                     </tr>
                                 );
                             })}

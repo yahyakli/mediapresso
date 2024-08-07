@@ -16,7 +16,7 @@ class ActiveMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->is_blocked) {
+        if (Auth::check() && Auth::user()->blocked_at) {
             Auth::logout();
             return redirect()->route('login')->withErrors(['email' => 'Your account has been blocked.']);
         }

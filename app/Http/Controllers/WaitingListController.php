@@ -18,7 +18,7 @@ class WaitingListController extends Controller
         ->get();
         $users = User::where('is_admin', false)->orderBy('created_at', 'desc')->get();
         $journalists = User::where('is_journalist', true)->orderBy('created_at', 'desc')->get();
-        $blockedUsers = User::where('is_blocked', true)->orderBy('created_at', 'desc')->get();
+        $blockedUsers = User::where('blocked_at', "!=", null)->orderBy('blocked_at', 'desc')->get();
         return inertia("Dashboard", [
             "waitingUsers" => $listItems,
             "Users" => $users,

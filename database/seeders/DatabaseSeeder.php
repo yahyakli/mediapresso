@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'telephone' => '0657838772',
             'email' => 'akli.yahya05@gmail.com',
             'is_admin' => true,
-            'is_blocked' => false,
+            'blocked_at' => null,
             'password' => 'akliakli',
         ]);
 

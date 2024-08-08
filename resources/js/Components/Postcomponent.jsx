@@ -18,16 +18,34 @@ export default function PostComponent({ post, user }) {
         if (!prevButton || !nextButton) return;
 
         let currentIndex = 0;
+        let previousIndex = 0;
 
         const showSlide = (index) => {
             items.forEach((item, i) => {
-                item.classList.toggle('block', i === index);
-                item.classList.toggle('hidden', i !== index);
+                if (i === index) {
+                    item.classList.remove('hidden');
+                    item.style.transform = `translateX(${previousIndex < index ? '100%' : '-100%'})`;
+                    setTimeout(() => {
+                        item.style.transition = 'transform 0.5s ease-in-out';
+                        item.style.transform = 'translateX(0)';
+                    }, 10);
+                } else if (i === previousIndex) {
+                    item.style.transition = 'transform 0.5s ease-in-out';
+                    item.style.transform = `translateX(${previousIndex < index ? '-100%' : '100%'})`;
+                    setTimeout(() => {
+                        item.classList.add('hidden');
+                        item.style.transition = '';
+                    }, 500);
+                } else {
+                    item.classList.add('hidden');
+                    item.style.transform = 'translateX(0)';
+                }
             });
             buttons.forEach((button, i) => {
                 button.classList.toggle('bg-blue-600', i === index);
                 button.classList.toggle('bg-white', i !== index);
             });
+            previousIndex = index;
         };
 
         const nextSlide = () => {
@@ -75,11 +93,11 @@ export default function PostComponent({ post, user }) {
                     <div ref={carouselRef} className="relative w-full" data-carousel="slide">
                         <div className="relative overflow-hidden rounded-lg h-96">
                             {post.attachments.map((attachment, index) => (
-                                <div key={attachment.id} className={`duration-700 ease-in-out ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
+                                <div key={attachment.id} className={`absolute inset-0 duration-500 ease-in-out transform transition-all ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
                                     {attachment.file_mime.match('image/') ? (
-                                        <img src={`storage/${attachment.file_path}`} className="absolute w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt={post.title} />
+                                        <img src={`storage/${attachment.file_path}`} className="absolute w-full h-full object-cover" alt={post.title} />
                                     ) : (
-                                        <video src={attachment.file_path} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" controls></video>
+                                        <video src={attachment.file_path} className="absolute block w-full h-full object-cover" controls></video>
                                     )}
                                 </div>
                             ))}

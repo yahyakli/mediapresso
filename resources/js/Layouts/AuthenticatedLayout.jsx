@@ -61,7 +61,7 @@ export default function Authenticated({ user, header, children }) {
                                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                         >
                                             <div className='flex justify-center items-center text-[18px] gap-3'>
-                                                <UserAvatar user={user}/>
+                                                <UserAvatar user={user} mainScoop={false}/>
                                                 {user.username}
                                             </div>
 

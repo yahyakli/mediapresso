@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, useForm } from '@inertiajs/react'
 import InputLabel from '@/Components/InputLabel';
@@ -28,6 +28,7 @@ const FileList = ({ files, onRemove }) => {
 };
 
 export default function create({ auth }) {
+
 
     const { data, setData, post, processing, errors, reset } = useForm({
         title: '',
@@ -79,7 +80,7 @@ export default function create({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <form onSubmit={submit} className='max-w-[600px] mx-auto py-10' enctype="multipart/form-data">
+                        <form onSubmit={submit} className='max-w-[600px] mx-auto py-10' encType="multipart/form-data">
                             <div>
                                 <InputLabel htmlFor="title" value="Title" />
 
@@ -150,6 +151,9 @@ export default function create({ auth }) {
                                     <SecondaryButton type='submit' disabled={processing}>
                                         Submit
                                     </SecondaryButton>
+                                </div>
+                                <div>
+                                    
                                 </div>
                             </div>
                         </form>

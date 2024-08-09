@@ -11,6 +11,7 @@ export default function PostComponent({ post, user }) {
         if (!carousel) return;
 
         const items = carousel.querySelectorAll('[data-carousel-item]');
+        const videos = carousel.querySelectorAll('video');
         const buttons = carousel.querySelectorAll('[data-carousel-slide-to]');
         const prevButton = carousel.querySelector('[data-carousel-prev]');
         const nextButton = carousel.querySelector('[data-carousel-next]');
@@ -19,6 +20,22 @@ export default function PostComponent({ post, user }) {
 
         let currentIndex = 0;
         let previousIndex = 0;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play();
+                } else {
+                    entry.target.pause();
+                }
+            });
+        }, {
+            threshold: 0.5 // Adjust this value as needed
+        });
+
+        videos.forEach(video => {
+            observer.observe(video);
+        });
 
         const showSlide = (index) => {
             items.forEach((item, i) => {
@@ -71,6 +88,7 @@ export default function PostComponent({ post, user }) {
             nextButton.removeEventListener('click', nextSlide);
             prevButton.removeEventListener('click', prevSlide);
             buttons.forEach((button, index) => button.removeEventListener('click', () => showSlide(index)));
+            videos.forEach(video => observer.unobserve(video));
         };
     }, [post.attachments]);
 
@@ -93,9 +111,9 @@ export default function PostComponent({ post, user }) {
                     <div ref={carouselRef} className="relative w-full" data-carousel="slide">
                         <div className="relative overflow-hidden rounded-lg h-[40rem]">
                             {post.attachments.map((attachment, index) => (
-                                <div key={attachment.id} className={`mb-10 absolute inset-0 duration-500 ease-in-out transform transition-all ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
+                                <div key={attachment.id} className={`flex justify-center items-center mb-10 absolute inset-0 duration-500 ease-in-out transform transition-all ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
                                     {attachment.file_mime.match('image/') ? (
-                                        <img src={`storage/${attachment.file_path}`} className="absolute w-full h-full object-cover" alt={post.title} />
+                                        <img src={`storage/${attachment.file_path}`} className="absolute h-full object-cover" alt={post.title} />
                                     ) : (
                                         <video src={`storage/${attachment.file_path}`} className="absolute block w-full h-full object-cover" controls></video>
                                     )}

@@ -79,7 +79,7 @@ export default function create({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <form onSubmit={submit} className='max-w-[600px] mx-auto py-10'>
+                        <form onSubmit={submit} className='max-w-[600px] mx-auto py-10' enctype="multipart/form-data">
                             <div>
                                 <InputLabel htmlFor="title" value="Title" />
 
@@ -114,7 +114,7 @@ export default function create({ auth }) {
                                 <InputError message={errors.description} className="mt-2" />
                             </div>
                             <div className="mt-4">
-                                <InputLabel htmlFor="attachments" value="Images or Videos" />
+                                <InputLabel htmlFor="attachments" value="Import Images or Videos" className='bg-blue-500 w-fit text-white text-xl px-4 py-2 rounded-lg' />
 
                                 <input
                                     id="attachments"

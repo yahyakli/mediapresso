@@ -91,22 +91,22 @@ export default function PostComponent({ post, user }) {
             {post.attachments.length > 0 && (
                 <div>
                     <div ref={carouselRef} className="relative w-full" data-carousel="slide">
-                        <div className="relative overflow-hidden rounded-lg h-96">
+                        <div className="relative overflow-hidden rounded-lg h-[40rem]">
                             {post.attachments.map((attachment, index) => (
-                                <div key={attachment.id} className={`absolute inset-0 duration-500 ease-in-out transform transition-all ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
+                                <div key={attachment.id} className={`mb-10 absolute inset-0 duration-500 ease-in-out transform transition-all ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
                                     {attachment.file_mime.match('image/') ? (
                                         <img src={`storage/${attachment.file_path}`} className="absolute w-full h-full object-cover" alt={post.title} />
                                     ) : (
-                                        <video src={attachment.file_path} className="absolute block w-full h-full object-cover" controls></video>
+                                        <video src={`storage/${attachment.file_path}`} className="absolute block w-full h-full object-cover" controls></video>
                                     )}
                                 </div>
                             ))}
                         </div>
                         {post.attachments.length > 1 && (
                             <>
-                                <div className="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+                                <div className="absolute z-30 flex -translate-x-1/2 bottom-1 left-1/2 space-x-3 rtl:space-x-reverse">
                                     {post.attachments.map((_, index) => (
-                                        <button key={index} type="button" className={`w-3 h-3 rounded-full border-1 border ${index === 0 ? 'bg-blue-600' : 'bg-white'}`} aria-current={index === 0 ? "true" : "false"} aria-label={`Slide ${index + 1}`} data-carousel-slide-to={index}></button>
+                                        <button key={index} type="button" className={`w-4 h-4 rounded-full border-2 border-blue-500 ${index === 0 ? 'bg-blue-600' : 'bg-white'}`} aria-current={index === 0 ? "true" : "false"} aria-label={`Slide ${index + 1}`} data-carousel-slide-to={index}></button>
                                     ))}
                                 </div>
                                 <button type="button" className="absolute top-1/2 left-0 z-30 flex items-center justify-center px-4 cursor-pointer group focus:outline-none -translate-y-1/2" data-carousel-prev>

@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import UserAvatar from './UserAvatar';
 import { formatPostDate } from '@/helpers';
+import { AiOutlineLike } from "react-icons/ai";
+import { FaCommentAlt } from "react-icons/fa";
+
+
 
 export default function PostComponent({ post, user }) {
     const carouselRef = useRef(null);
@@ -148,9 +152,9 @@ export default function PostComponent({ post, user }) {
                     </div>
                 </div>
             )} 
-            <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t'>
-                <div className='border-r-gray-300 border-r w-1/2 text-center py-2'>like</div>
-                <div className='w-1/2 text-center py-2'>comment</div>
+            <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
+                <div className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiOutlineLike /> Like</div>
+                <div className='w-1/2 py-2 flex items-center justify-center gap-2'><FaCommentAlt /> Comment</div>
             </div>
         </div>
     );

@@ -93,8 +93,8 @@ export default function PostComponent({ post, user }) {
     }, [post.attachments]);
 
     return (
-        <div className='p-6 my-12 mx-4 bg-gray-100 rounded-xl'>
-            <div className='flex items-center justify-between'>
+        <div className='p-6 my-12 mx-4 bg-gray-100 rounded-xl border pb-0'>
+            <div className='flex items-center justify-between border-b-gray-300 border-b pb-2'>
                 <div className='flex items-center gap-2 text-lg py-2'>
                     <UserAvatar user={user} /> {user.username}
                 </div>
@@ -147,7 +147,11 @@ export default function PostComponent({ post, user }) {
                         )}
                     </div>
                 </div>
-            )}
+            )} 
+            <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t'>
+                <div className='border-r-gray-300 border-r w-1/2 text-center py-2'>like</div>
+                <div className='w-1/2 text-center py-2'>comment</div>
+            </div>
         </div>
     );
 }

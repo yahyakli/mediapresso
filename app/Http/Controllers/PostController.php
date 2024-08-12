@@ -76,7 +76,7 @@ class PostController extends Controller
             ]);
             Post::where('id', $postId)->increment('likes_count');
         }
-        return inertia(route('home'));
+        return inertia('home');
     }
 
 }

@@ -13,10 +13,18 @@ import { useForm } from '@inertiajs/react';
 export default function PostComponent({ Post, user }) {
     const carouselRef = useRef(null);
     const [postLiked, setPostLiked] = useState(Post.liked);
+    const [likesCount, setLikesCount] = useState(Post.likes_count);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         post_id : Post.id,
     });
+
+    useEffect(() => {
+        postLiked ?
+        setLikesCount(Post.likes_count --) :
+        setLikesCount(Post.likes_count ++)
+    }, [postLiked])
+
 
     const likeSubmit = (e) => {
         e.preventDefault();
@@ -170,9 +178,9 @@ export default function PostComponent({ Post, user }) {
             <form onSubmit={likeSubmit}>
                 <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
                     {!postLiked ? 
-                        <button onClick={() => setPostLiked(true)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({Post.likes_count})</span></button>
+                        <button onClick={() => setPostLiked(true)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({likesCount})</span></button>
                     :
-                        <button onClick={() => setPostLiked(false)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({Post.likes_count})</span></button>
+                        <button onClick={() => setPostLiked(false)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({likesCount})</span></button>
                     }
                     <button className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
                 </div>

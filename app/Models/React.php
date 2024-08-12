@@ -8,13 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class React extends Model
 {
     protected $fillable = [
-        'type',
-        'reactable_id',
-        'reactable_type'
+        'user_id',
+        'post_id'
     ];
 
-    public function reactable()
+    public function user()
     {
-        return $this->morphTo();
+        return $this->belongsTo(User::class);
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
     }
 }

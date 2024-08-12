@@ -1,13 +1,28 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import UserAvatar from './UserAvatar';
 import { formatPostDate } from '@/helpers';
 import { AiOutlineLike } from "react-icons/ai";
-import { FaCommentAlt } from "react-icons/fa";
+import { AiFillLike } from "react-icons/ai";
+import { FaRegCommentAlt } from "react-icons/fa";
+import { useForm } from '@inertiajs/react';
 
 
 
-export default function PostComponent({ post, user }) {
+
+
+export default function PostComponent({ Post, user }) {
     const carouselRef = useRef(null);
+    const [postLiked, setPostLiked] = useState(Post.liked);
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        post_id : Post.id,
+    });
+
+    const likeSubmit = (e) => {
+        e.preventDefault();
+
+        post(route('post.like'));
+    }
 
     useEffect(() => {
         const carousel = carouselRef.current;
@@ -94,7 +109,7 @@ export default function PostComponent({ post, user }) {
             buttons.forEach((button, index) => button.removeEventListener('click', () => showSlide(index)));
             videos.forEach(video => observer.unobserve(video));
         };
-    }, [post.attachments]);
+    }, [Post.attachments]);
 
     return (
         <div className='p-6 my-12 mx-4 bg-gray-100 rounded-xl border pb-0'>
@@ -102,32 +117,32 @@ export default function PostComponent({ post, user }) {
                 <div className='flex items-center gap-2 text-lg py-2'>
                     <UserAvatar user={user} /> {user.username}
                 </div>
-                <span>{formatPostDate(post.created_at)}</span>
+                <span>{formatPostDate(Post.created_at)}</span>
             </div>
             <div className='py-2 text-2xl mt-5'>
-                {post.title}
+                {Post.title}
             </div>
             <div className='py-2 text-md mb-6'>
-                {post.description}
+                {Post.description}
             </div>
-            {post.attachments.length > 0 && (
+            {Post.attachments.length > 0 && (
                 <div>
                     <div ref={carouselRef} className="relative w-full" data-carousel="slide">
                         <div className="relative overflow-hidden rounded-lg h-[40rem]">
-                            {post.attachments.map((attachment, index) => (
+                            {Post.attachments.map((attachment, index) => (
                                 <div key={attachment.id} className={`flex justify-center items-center mb-10 absolute inset-0 duration-500 ease-in-out transform transition-all ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
                                     {attachment.file_mime.match('image/') ? (
-                                        <img src={`storage/${attachment.file_path}`} className="absolute h-full object-cover" alt={post.title} />
+                                        <img src={`storage/${attachment.file_path}`} className="absolute h-full object-cover" alt={Post.title} />
                                     ) : (
                                         <video src={`storage/${attachment.file_path}`} className="absolute block w-full h-full object-cover" controls></video>
                                     )}
                                 </div>
                             ))}
                         </div>
-                        {post.attachments.length > 1 && (
+                        {Post.attachments.length > 1 && (
                             <>
                                 <div className="absolute z-30 flex -translate-x-1/2 bottom-1 left-1/2 space-x-3 rtl:space-x-reverse">
-                                    {post.attachments.map((_, index) => (
+                                    {Post.attachments.map((_, index) => (
                                         <button key={index} type="button" className={`w-4 h-4 rounded-full border-2 border-blue-500 ${index === 0 ? 'bg-blue-600' : 'bg-white'}`} aria-current={index === 0 ? "true" : "false"} aria-label={`Slide ${index + 1}`} data-carousel-slide-to={index}></button>
                                     ))}
                                 </div>
@@ -152,10 +167,16 @@ export default function PostComponent({ post, user }) {
                     </div>
                 </div>
             )} 
-            <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
-                <div className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiOutlineLike /> Like</div>
-                <div className='w-1/2 py-2 flex items-center justify-center gap-2'><FaCommentAlt /> Comment</div>
-            </div>
+            <form onSubmit={likeSubmit}>
+                <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
+                    {!postLiked ? 
+                        <button onClick={() => setPostLiked(true)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({Post.likes_count})</span></button>
+                    :
+                        <button onClick={() => setPostLiked(false)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({Post.likes_count})</span></button>
+                    }
+                    <button className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
+                </div>
+            </form>
         </div>
     );
 }

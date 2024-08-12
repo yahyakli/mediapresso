@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('category');
+            $table->unsignedBigInteger('likes_count')->default(0);
             $table->timestamps();
         });
     }

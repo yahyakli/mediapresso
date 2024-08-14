@@ -56,20 +56,17 @@ class PostController extends Controller
             'post_id' => 'required|exists:posts,id',
         ]);
 
-        $userId = auth()->id(); // Get the authenticated user's ID
+        $userId = auth()->id();
         $postId = $request->post_id;
 
-        // Find the existing react record
         $react = React::where('user_id', $userId)
                     ->where('post_id', $postId)
                     ->first();
 
         if ($react) {
-            // React exists, so delete it
             $react->delete();
             Post::where('id', $postId)->decrement('likes_count');
         } else {
-            // React does not exist, so create it
             React::create([
                 'user_id' => $userId,
                 'post_id' => $postId,

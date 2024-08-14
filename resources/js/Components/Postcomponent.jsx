@@ -5,6 +5,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { AiFillLike } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { useForm } from '@inertiajs/react';
+import CommentPopup from './CommentPopup';
 
 
 
@@ -14,6 +15,7 @@ export default function PostComponent({ Post, user }) {
     const carouselRef = useRef(null);
     const [postLiked, setPostLiked] = useState(Post.liked);
     const [likesCount, setLikesCount] = useState(Post.likes_count);
+    const [commentPopUp, setCommentPopUp] = useState(false);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         post_id : Post.id,
@@ -175,16 +177,19 @@ export default function PostComponent({ Post, user }) {
                     </div>
                 </div>
             )} 
-            <form onSubmit={likeSubmit}>
                 <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
-                    {!postLiked ? 
-                        <button onClick={() => setPostLiked(true)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({likesCount})</span></button>
-                    :
-                        <button onClick={() => setPostLiked(false)} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({likesCount})</span></button>
-                    }
-                    <button className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
+                    <form onSubmit={likeSubmit} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center'>
+                        {!postLiked ? 
+                            <button onClick={() => setPostLiked(true)} className='flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({likesCount})</span></button>
+                        :
+                            <button onClick={() => setPostLiked(false)} className='flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({likesCount})</span></button>
+                        }
+                    </form>
+                    <button onClick={() => setCommentPopUp(true)} className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
                 </div>
-            </form>
+                {commentPopUp && (
+                    <CommentPopup postId={Post.id}/>
+                )}
         </div>
     );
 }

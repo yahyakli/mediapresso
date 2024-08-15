@@ -1,48 +1,57 @@
 import React, { useEffect, useRef, useState } from 'react';
 import UserAvatar from './UserAvatar';
 import { formatPostDate } from '@/helpers';
-import { AiOutlineLike } from "react-icons/ai";
-import { AiFillLike } from "react-icons/ai";
+import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { useForm } from '@inertiajs/react';
 import CommentPopup from './CommentPopup';
 
-
-
-
-
 export default function PostComponent({ Post, user }) {
     const carouselRef = useRef(null);
+    const popupRef = useRef(null);
     const [postLiked, setPostLiked] = useState(Post.liked);
     const [likesCount, setLikesCount] = useState(Post.likes_count);
     const [commentPopUp, setCommentPopUp] = useState(false);
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        post_id : Post.id,
+        post_id: Post.id,
     });
 
     useEffect(() => {
         postLiked ?
-        setLikesCount(Post.likes_count --) :
-        setLikesCount(Post.likes_count ++)
-    }, [postLiked])
+        setLikesCount(Post.likes_count++) :
+        setLikesCount(Post.likes_count--);
+    }, [postLiked]);
 
     useEffect(() => {
         commentPopUp ?
         document.body.classList.add('screen_block') :
         document.body.classList.remove('screen_block');
-    }, [commentPopUp])
+    }, [commentPopUp]);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (popupRef.current && !popupRef.current.contains(event.target)) {
+                setCommentPopUp(false);
+            }
+        };
+
+        if (commentPopUp) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [commentPopUp]);
 
     const likeSubmit = (e) => {
         e.preventDefault();
-
         post(route('post.like'));
-    }
+    };
 
     useEffect(() => {
         const carousel = carouselRef.current;
-
         if (!carousel) return;
 
         const items = carousel.querySelectorAll('[data-carousel-item]');
@@ -65,7 +74,7 @@ export default function PostComponent({ Post, user }) {
                 }
             });
         }, {
-            threshold: 0.5 // Adjust this value as needed
+            threshold: 0.5
         });
 
         videos.forEach(video => {
@@ -182,20 +191,22 @@ export default function PostComponent({ Post, user }) {
                         )}
                     </div>
                 </div>
-            )} 
-                <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
-                    <form onSubmit={likeSubmit} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center'>
-                        {!postLiked ? 
-                            <button onClick={() => setPostLiked(true)} className='flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({likesCount})</span></button>
-                        :
-                            <button onClick={() => setPostLiked(false)} className='flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({likesCount})</span></button>
-                        }
-                    </form>
-                    <button onClick={() => setCommentPopUp(true)} className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
-                </div>
-                {commentPopUp && (
+            )}
+            <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
+                <form onSubmit={likeSubmit} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center'>
+                    {!postLiked ? 
+                        <button onClick={() => setPostLiked(true)} className='flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({likesCount})</span></button>
+                    :
+                        <button onClick={() => setPostLiked(false)} className='flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({likesCount})</span></button>
+                    }
+                </form>
+                <button onClick={() => setCommentPopUp(true)} className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
+            </div>
+            {commentPopUp && (
+                <div ref={popupRef}>
                     <CommentPopup postId={Post.id}/>
-                )}
+                </div>
+            )}
         </div>
     );
 }

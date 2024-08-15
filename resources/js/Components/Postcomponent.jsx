@@ -13,14 +13,16 @@ export default function PostComponent({ Post, user }) {
     const [likesCount, setLikesCount] = useState(Post.likes_count);
     const [commentPopUp, setCommentPopUp] = useState(false);
 
+    console.log(postLiked)
+
     const { data, setData, post, processing, errors, reset } = useForm({
         post_id: Post.id,
     });
 
     useEffect(() => {
         postLiked ?
-        setLikesCount(Post.likes_count++) :
-        setLikesCount(Post.likes_count--);
+        setLikesCount(Post.likes_count --) :
+        setLikesCount(Post.likes_count ++);
     }, [postLiked]);
 
     useEffect(() => {

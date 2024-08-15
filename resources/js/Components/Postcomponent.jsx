@@ -27,6 +27,12 @@ export default function PostComponent({ Post, user }) {
         setLikesCount(Post.likes_count ++)
     }, [postLiked])
 
+    useEffect(() => {
+        commentPopUp ?
+        document.body.classList.add('screen_block') :
+        document.body.classList.remove('screen_block');
+    }, [commentPopUp])
+
 
     const likeSubmit = (e) => {
         e.preventDefault();

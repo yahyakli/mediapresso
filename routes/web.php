@@ -31,6 +31,7 @@ Route::middleware('auth', 'active')->group(function () {
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/post/like', [PostController::class, 'like'])->name('post.like');
+    Route::post('/post/createComment', [PostController::class, 'createComment'])->name('post.createComment');
 });
 
 require __DIR__.'/auth.php';

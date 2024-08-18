@@ -17,6 +17,8 @@ export default function PostComponent({ Post, user }) {
         post_id: Post.id,
     });
 
+    const closePopup = () => setCommentPopUp(false);
+
     useEffect(() => {
         postLiked ?
         setLikesCount(Post.likes_count --) :
@@ -204,7 +206,7 @@ export default function PostComponent({ Post, user }) {
             </div>
             {commentPopUp && (
                 <div>
-                    <CommentPopup postId={Post} ref={popupRef}/>
+                    <CommentPopup Post={Post} onClose={closePopup}  ref={popupRef}/>
                 </div>
             )}
         </div>

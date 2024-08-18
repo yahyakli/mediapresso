@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attachment;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\React;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -75,5 +79,30 @@ class PostController extends Controller
         }
         return inertia('home');
     }
+
+    public function createComment(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'content' => 'required|string|max:1000',
+            'post_id' => 'required',
+            'parent_id' => 'nullable'
+        ]);
+
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Create a new comment with the validated data
+        Comment::create([
+            'content' => $request->content,
+            'user_id' => $userId,
+            'post_id' => $request->post_id,
+            'parent_id' => $request->parent_id, // Include parent_id if it's provided
+        ]);
+
+        // Redirect back to the home page or wherever is appropriate
+        return redirect()->route('home');
+    }
+
 
 }

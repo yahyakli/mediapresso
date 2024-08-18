@@ -195,18 +195,21 @@ export default function PostComponent({ Post, user }) {
                 </div>
             )}
             <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
-                <form onSubmit={likeSubmit} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center'>
+                <form onSubmit={likeSubmit} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center relative'>
+                    <div className='absolute top-0 left-0 text-sm'>
+                        {likesCount} Like
+                    </div>
                     {!postLiked ? 
-                        <button onClick={() => setPostLiked(true)} className='flex items-center justify-center gap-2'><AiOutlineLike /> Like <span>({likesCount})</span></button>
+                        <button onClick={() => setPostLiked(true)} className='flex items-center justify-center gap-2'><AiOutlineLike /> Like</button>
                     :
-                        <button onClick={() => setPostLiked(false)} className='flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({likesCount})</span></button>
+                        <button onClick={() => setPostLiked(false)} className='flex items-center justify-center gap-2'><AiFillLike /> Liked</button>
                     }
                 </form>
                 <button onClick={() => setCommentPopUp(true)} className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comments</button>
             </div>
             {commentPopUp && (
                 <div>
-                    <CommentPopup Post={Post} onClose={closePopup}  ref={popupRef}/>
+                    <CommentPopup Post={Post} onClose={closePopup} user={user} ref={popupRef}/>
                 </div>
             )}
         </div>

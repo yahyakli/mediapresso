@@ -12,7 +12,10 @@ class HomeController extends Controller
 {
     public function index(){
         $userId = Auth::id();
-        $posts = Post::with(['attachments', 'reacts', 'comments.user'])->orderBy('created_at', 'desc')->get();
+        $posts = Post::with(['attachments', 'reacts', 'comments' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }, 'comments.user'])->orderBy('created_at', 'desc')->get();
+        
 
         foreach ($posts as $post) {
             $post->liked = $post->reacts->where('user_id', $userId)->isNotEmpty();

@@ -101,7 +101,7 @@ class PostController extends Controller
         ]);
 
         // Redirect back to the home page or wherever is appropriate
-        return redirect()->route('home');
+        return inertia(route('home'));
     }
 
 

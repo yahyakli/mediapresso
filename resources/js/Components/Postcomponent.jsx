@@ -202,7 +202,7 @@ export default function PostComponent({ Post, user }) {
                         <button onClick={() => setPostLiked(false)} className='flex items-center justify-center gap-2'><AiFillLike /> Liked <span>({likesCount})</span></button>
                     }
                 </form>
-                <button onClick={() => setCommentPopUp(true)} className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
+                <button onClick={() => setCommentPopUp(true)} className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comments</button>
             </div>
             {commentPopUp && (
                 <div>

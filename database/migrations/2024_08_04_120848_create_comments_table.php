@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->unsignedBigInteger('commentable_id');
-            $table->string('commentable_type');
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('comments')->onDelete('cascade');
             $table->timestamps();

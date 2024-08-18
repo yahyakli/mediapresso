@@ -13,8 +13,6 @@ export default function PostComponent({ Post, user }) {
     const [likesCount, setLikesCount] = useState(Post.likes_count);
     const [commentPopUp, setCommentPopUp] = useState(false);
 
-    console.log(postLiked)
-
     const { data, setData, post, processing, errors, reset } = useForm({
         post_id: Post.id,
     });
@@ -205,8 +203,8 @@ export default function PostComponent({ Post, user }) {
                 <button onClick={() => setCommentPopUp(true)} className='w-1/2 py-2 flex items-center justify-center gap-2'><FaRegCommentAlt /> Comment</button>
             </div>
             {commentPopUp && (
-                <div ref={popupRef}>
-                    <CommentPopup postId={Post.id}/>
+                <div>
+                    <CommentPopup postId={Post} ref={popupRef}/>
                 </div>
             )}
         </div>

@@ -37,12 +37,11 @@ const CommentPopup = forwardRef(({ Post, onClose, user }, ref) => {
         reset();
     };
 
-    console.log(Post.comments);
 
     return (
         <div className='fixed z-50 top-0 left-0 bg-black/20 h-screen backdrop-blur-lg w-screen flex items-center justify-center'>
             <div ref={ref} className='bg-gray-100 rounded-xl w-1/2 h-2/3 overflow-hidden relative'>
-                <div onClick={onClose} className='absolute top-5 right-5 text-black text-3xl hover:text-red-600 duration-300'>
+                <div onClick={onClose} className='absolute top-5 right-5 text-black text-3xl hover:text-red-500 duration-300'>
                     <RxCross2 />
                 </div>
                 <div className='text-2xl h-1/6 border-b-gray-300 border-b flex items-center justify-center mx-5'>

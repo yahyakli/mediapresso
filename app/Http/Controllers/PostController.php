@@ -99,6 +99,7 @@ class PostController extends Controller
             'post_id' => $request->post_id,
             'parent_id' => $request->parent_id, // Include parent_id if it's provided
         ]);
+        Post::where('id', $request->post_id)->increment('comments_count');
 
         // Redirect back to the home page or wherever is appropriate
         return inertia(route('home'));

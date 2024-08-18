@@ -11,6 +11,7 @@ export default function PostComponent({ Post, user }) {
     const popupRef = useRef(null);
     const [postLiked, setPostLiked] = useState(Post.liked);
     const [likesCount, setLikesCount] = useState(Post.likes_count);
+    const [commentsCount, setCommentsCount] = useState(Post.comments_count);
     const [commentPopUp, setCommentPopUp] = useState(false);
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -24,6 +25,11 @@ export default function PostComponent({ Post, user }) {
         setLikesCount(Post.likes_count --) :
         setLikesCount(Post.likes_count ++);
     }, [postLiked]);
+
+
+    useEffect(() => {
+        setCommentsCount(Post.comments_count ++);
+    }, [Post.comments.length]);
 
     useEffect(() => {
         commentPopUp ?
@@ -153,7 +159,7 @@ export default function PostComponent({ Post, user }) {
                 {Post.description}
             </div>
             {Post.attachments.length > 0 && (
-                <div>
+                <div className='relative'>
                     <div ref={carouselRef} className="relative w-full" data-carousel="slide">
                         <div className="relative overflow-hidden rounded-lg h-[40rem]">
                             {Post.attachments.map((attachment, index) => (
@@ -192,13 +198,16 @@ export default function PostComponent({ Post, user }) {
                             </>
                         )}
                     </div>
-                </div>
-            )}
-            <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl'>
-                <form onSubmit={likeSubmit} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center relative'>
-                    <div className='absolute top-0 left-0 text-sm'>
+                    <div className='absolute bottom-0 left-0 text-sm'>
                         {likesCount} Like
                     </div>
+                    <div className='absolute bottom-0 right-0 text-sm'>
+                        {commentsCount} Comment
+                    </div>
+                </div>
+            )}
+            <div className='mt-4 flex justify-around py-4 border-t-gray-300 border-t text-xl relative'>
+                <form onSubmit={likeSubmit} className='border-r-gray-300 border-r w-1/2 py-2 flex items-center justify-center relative'>
                     {!postLiked ? 
                         <button onClick={() => setPostLiked(true)} className='flex items-center justify-center gap-2'><AiOutlineLike /> Like</button>
                     :

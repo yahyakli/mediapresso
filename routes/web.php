@@ -24,6 +24,7 @@ Route::middleware('auth', 'admin', 'active')->group(function(){
 Route::middleware('auth', 'active', 'journalist')->group(function(){
     Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
     Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
+    Route::delete('/post/delete/{postId}', [PostController::class, 'delete'])->name('post.delete');
 });
 
 Route::middleware('auth', 'active')->group(function () {

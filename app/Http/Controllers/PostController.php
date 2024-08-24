@@ -105,5 +105,14 @@ class PostController extends Controller
         return inertia(route('home'));
     }
 
+    public function delete(Post $post){
+
+        dd($post);
+        
+        $post->delete();
+
+        return redirect()->route('Home');
+    }
+
 
 }

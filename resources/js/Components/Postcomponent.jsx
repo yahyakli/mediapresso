@@ -5,8 +5,11 @@ import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { useForm } from '@inertiajs/react';
 import CommentPopup from './CommentPopup';
+import { RxHamburgerMenu } from "react-icons/rx";
+import Dropdown from './Dropdown';
 
-export default function PostComponent({ Post, user }) {
+
+export default function PostComponent({ Post, Post_user, user }) {
     const carouselRef = useRef(null);
     const popupRef = useRef(null);
     const [postLiked, setPostLiked] = useState(Post.liked);
@@ -17,6 +20,12 @@ export default function PostComponent({ Post, user }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         post_id: Post.id,
     });
+
+    const deleteSubmit = (e) => {
+        e.preventDefault();
+
+        post(`/post/delete/${Post.id}`);
+    }
 
     const closePopup = () => setCommentPopUp(false);
 
@@ -148,9 +157,29 @@ export default function PostComponent({ Post, user }) {
         <div className='p-6 my-12 mx-4 bg-gray-100 rounded-xl border pb-0'>
             <div className='flex items-center justify-between border-b-gray-300 border-b pb-2'>
                 <div className='flex items-center gap-2 text-lg py-2'>
-                    <UserAvatar user={user} /> {user.username}
+                    <UserAvatar user={Post_user} /> {Post_user.username}
                 </div>
-                <span>{formatPostDate(Post.created_at)}</span>
+                <div className='flex items-center justify-center gap-3'>
+                    <span>{formatPostDate(Post.created_at)}</span>
+                    {user && Post.user_id === user.id && (
+                        <div className='text-xl font-bold'>
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <span className="inline-flex rounded-md  active:text-gray-400">
+                                        <RxHamburgerMenu />
+                                    </span>
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Content>
+                                    <Dropdown.Link>Edit Post</Dropdown.Link>
+                                    <form onSubmit={deleteSubmit}>
+                                        <Dropdown.Link as='button'>Delete Post</Dropdown.Link>
+                                    </form>
+                                </Dropdown.Content>
+                            </Dropdown>
+                        </div>
+                    )}
+                </div>
             </div>
             <div className='py-2 text-2xl mt-5'>
                 {Post.title}
@@ -218,7 +247,7 @@ export default function PostComponent({ Post, user }) {
             </div>
             {commentPopUp && (
                 <div>
-                    <CommentPopup Post={Post} onClose={closePopup} user={user} ref={popupRef}/>
+                    <CommentPopup Post={Post} onClose={closePopup} Post_user={Post_user} ref={popupRef}/>
                 </div>
             )}
         </div>

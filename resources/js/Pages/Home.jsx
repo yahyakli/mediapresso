@@ -18,7 +18,7 @@ export default function Home({ auth, posts, users }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         {posts.length !== 0 ? posts.map(post => {
                             return (
-                                    <Postcomponent key={post.id} Post={post} user={getUser(post.user_id)}/>
+                                    <Postcomponent key={post.id} Post={post} Post_user={getUser(post.user_id)} user={auth.user}/>
                                 )
                         })
                         :

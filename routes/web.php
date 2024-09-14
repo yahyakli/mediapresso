@@ -24,15 +24,16 @@ Route::middleware('auth', 'admin', 'active')->group(function(){
 Route::middleware('auth', 'active', 'journalist')->group(function(){
     Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
     Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
-    Route::delete('/post/delete/{postId}', [PostController::class, 'delete'])->name('post.delete');
+    Route::post('/post/edit/{post}', [PostController::class, 'edit'])->name('post.edit');
+    Route::post('/post/delete/{post}', [PostController::class, 'delete'])->name('post.delete');
 });
 
 Route::middleware('auth', 'active')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/post/like', [PostController::class, 'like'])->name('post.like');
-    Route::post('/post/createComment', [PostController::class, 'createComment'])->name('post.createComment');
+    Route::post('/post/like/{post}', [PostController::class, 'like'])->name('post.like');
+    Route::post('/post/createComment/{post}', [PostController::class, 'createComment'])->name('post.createComment');
 });
 
 require __DIR__.'/auth.php';

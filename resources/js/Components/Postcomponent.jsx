@@ -17,9 +17,7 @@ export default function PostComponent({ Post, Post_user, user }) {
     const [commentsCount, setCommentsCount] = useState(Post.comments_count);
     const [commentPopUp, setCommentPopUp] = useState(false);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        post_id: Post.id,
-    });
+    const { data, setData, post, processing, errors, reset } = useForm();
 
     const deleteSubmit = (e) => {
         e.preventDefault();
@@ -64,7 +62,7 @@ export default function PostComponent({ Post, Post_user, user }) {
 
     const likeSubmit = (e) => {
         e.preventDefault();
-        post(route('post.like'));
+        post(`/post/like/${Post.id}`);
     };
 
     useEffect(() => {
@@ -172,9 +170,11 @@ export default function PostComponent({ Post, Post_user, user }) {
 
                                 <Dropdown.Content>
                                     <Dropdown.Link>Edit Post</Dropdown.Link>
-                                    <form onSubmit={deleteSubmit}>
-                                        <Dropdown.Link as='button'>Delete Post</Dropdown.Link>
-                                    </form>
+                                    <Dropdown.Link>
+                                        <form onSubmit={deleteSubmit}>
+                                            <button>Delete Post</button>
+                                        </form>
+                                    </Dropdown.Link>
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>
@@ -194,7 +194,7 @@ export default function PostComponent({ Post, Post_user, user }) {
                             {Post.attachments.map((attachment, index) => (
                                 <div key={attachment.id} className={`flex justify-center items-center mb-10 absolute inset-0 duration-500 ease-in-out transform transition-all ${index === 0 ? 'block' : 'hidden'}`} data-carousel-item>
                                     {attachment.file_mime.match('image/') ? (
-                                        <img src={`storage/${attachment.file_path}`} className="absolute h-full object-cover" alt={Post.title} />
+                                        <img src={`storage/${attachment.file_path}`} onClick={() => setOpenPerviewModal(true)} className="absolute h-full object-cover" alt={Post.title} />
                                     ) : (
                                         <video src={`storage/${attachment.file_path}`} className="absolute block w-full h-full object-cover" controls></video>
                                     )}

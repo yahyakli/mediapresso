@@ -6,10 +6,9 @@ import { formatPostDate } from '@/helpers';
 import { RxCross2 } from "react-icons/rx";
 
 
-const CommentPopup = forwardRef(({ Post, onClose, user }, ref) => {
+const CommentPopup = forwardRef(({ Post, onClose, Post_user }, ref) => {
     const { data, setData, post, processing, errors, reset } = useForm({
         content: "",
-        post_id: Post.id,
         parent_id: "",
     });
 
@@ -19,12 +18,12 @@ const CommentPopup = forwardRef(({ Post, onClose, user }, ref) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        post(route('post.createComment'));
+        post(`/post/createComment/${Post.id}`);
 
         // Push the new comment to the Post.comments array
         Post.comments.unshift({
             id: Math.floor(Math.random() * 1000000),
-            user: user,
+            user: Post_user,
             content: data.content,
             created_at: new Date(),
         });

@@ -55,13 +55,10 @@ class PostController extends Controller
         return redirect(route('home'));
     }
 
-    public function like(Request $request){
-        $request->validate([
-            'post_id' => 'required|exists:posts,id',
-        ]);
+    public function like(Post $post){
 
         $userId = auth()->id();
-        $postId = $request->post_id;
+        $postId = $post->id;
 
         $react = React::where('user_id', $userId)
                     ->where('post_id', $postId)
@@ -80,12 +77,11 @@ class PostController extends Controller
         return inertia('home');
     }
 
-    public function createComment(Request $request)
+    public function createComment(Request $request, Post $post)
     {
         // Validate the incoming request data
         $request->validate([
             'content' => 'required|string|max:1000',
-            'post_id' => 'required',
             'parent_id' => 'nullable'
         ]);
 
@@ -96,7 +92,7 @@ class PostController extends Controller
         Comment::create([
             'content' => $request->content,
             'user_id' => $userId,
-            'post_id' => $request->post_id,
+            'post_id' => $post->id,
             'parent_id' => $request->parent_id, // Include parent_id if it's provided
         ]);
         Post::where('id', $request->post_id)->increment('comments_count');
@@ -105,13 +101,16 @@ class PostController extends Controller
         return inertia(route('home'));
     }
 
+    public function edit(Post $post){
+        return inertia(route('home'));
+    }
+
     public function delete(Post $post){
 
-        dd($post);
         
         $post->delete();
 
-        return redirect()->route('Home');
+        return redirect()->route('home');
     }
 
 
